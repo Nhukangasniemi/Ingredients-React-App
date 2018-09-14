@@ -1,10 +1,19 @@
 import React from 'react';
+import Form from './Form';
 
 class AddButton extends React.Component {
 
+    showForm = () => {
+        document.getElementById("form").style.display = 'block';
+    }
     render() {
         return(
-            <button>Add Dish</button>
+            <div>
+                <button onClick={this.showForm}>Add Dish</button>
+                <div id="form" style={{display: 'none'}}>
+                    <Form />
+                </div>
+            </div>
         )
     }
 
