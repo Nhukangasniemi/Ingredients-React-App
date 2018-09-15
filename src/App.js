@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Dish from './Dish.js';
 import AddButton from './AddButton.js';
-import Filter from './Filter.js'
+import Filter from './Filter.js';
+import Form from './Form.js'
 
 let DISHES = [
   {id: 1, name: 'Fish Soup', ingredients: ['Salmon cubes', 'Potatoes', 'Onions'], difficulty: 'Medium'},
@@ -25,10 +26,25 @@ class App extends Component {
     });
   }
 
+  showForm = () => {
+    if(document.getElementById("form").style.display === 'none') {
+        document.getElementById("form").style.display = 'block';
+    } else {
+        document.getElementById("form").style.display = 'none';
+    }
+  }
+
+  submitDish = (input) => {
+    DISHES.push(input);
+    this.setState({
+      meals: DISHES
+    })
+  }
+
   render() {
     let dishes = [];
     DISHES.forEach((dish) => {
-      if(dish.name.indexOf(this.state.searchText) === -1) {
+      if(dish.name.toLowerCase().indexOf(this.state.searchText.toLowerCase()) === -1) {
         return;
       }
       return dishes.push(<Dish val={dish} key={dish.id} searchText={this.state.searchText}/>);
@@ -49,7 +65,10 @@ class App extends Component {
         <div className="cards">
           {dishes}
         </div>
-        <AddButton />
+        <AddButton showClick={this.showForm} />
+        <div id="form" style={{display: 'none'}}>
+            <Form onSubmit={this.submitDish}/>
+        </div>
       </div>
     );
   }
