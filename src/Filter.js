@@ -4,7 +4,9 @@ class Filter extends React.Component {
 
     handleChange = (e) => {
         const value = e.target.value;
-        this.props.onFilter(value);
+        this.props.onFilter({
+            searchText: value,
+        });
     }
 
     render() {

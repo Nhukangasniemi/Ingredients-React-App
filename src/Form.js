@@ -1,19 +1,32 @@
 import React from 'react';
 
+const origin = {id: "", name: "", ingredients: [], difficulty: ""};
 class Form extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            product: Object.assign({}, origin)
+        }
+    }
+
+    handleChange = (e) => {
+        const name = e.target.name;
+        let value = e.target.value;
+        if(name === "ingredients") {
+            value = e.target.value.split(",");
+        }
+        this.setState((prevState) => {
+            prevState.product[name]= value;
+            return {product: prevState.product};
+        })
+    }
 
     handleSave = (e) => {
-        let name = document.getElementById("name").value;
-        let elements = document.getElementById("elements").value.split(",");
-        let difficulty = document.getElementById("difficulty").value;
+        this.props.onSubmit(this.state.product);
+        this.setState({
+            product: Object.assign({}, origin)
+        });
         e.preventDefault();
-        let newElement = {
-            id: name,
-            name: name,
-            ingredients: elements,
-            difficulty: difficulty 
-        }
-        this.props.onSubmit(newElement);
     }
 
     render() {
@@ -22,14 +35,18 @@ class Form extends React.Component {
                 <p>
                     Name
                     <br />
-                    <input type="text" id="name" />
+                    <input type="text" name="name" onChange={this.handleChange} value={this.state.product.name}/>
                 </p>
                 <p>
                     Ingredients <br />
-                    <input type="text" placeholder="Seperate by comma" id="elements" />
+                    <input type="text" placeholder="Seperate by comma" name="ingredients" 
+                    value={this.state.product.ingredients}
+                    onChange={this.handleChange}/>
                 </p>
                 <p>Degree of difficulty <br />
-                    <input type="text" placeholder="Easy, Medium or Hard" id="difficulty" />
+                    <input type="text" placeholder="Easy, Medium or Hard" name="difficulty" 
+                    value={this.state.product.difficulty}
+                    onChange={this.handleChange} />
                 </p>
                 <input type="submit" value="Submit" onClick={this.handleSave} />
             </form>

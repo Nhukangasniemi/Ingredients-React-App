@@ -21,29 +21,26 @@ class App extends Component {
   }
 
   handleFilter = (filterInput) => {
-    this.setState({
-      searchText: `${filterInput}`
-    });
+    this.setState(filterInput);
   }
 
   showForm = () => {
-    if(document.getElementById("form").style.display === 'none') {
-        document.getElementById("form").style.display = 'block';
-    } else {
-        document.getElementById("form").style.display = 'none';
-    }
+    let display = document.getElementById("form").style.display;
+    document.getElementById("form").style.display = display === "none" ? "block": "none"; 
   }
 
   submitDish = (input) => {
-    DISHES.push(input);
-    this.setState({
-      meals: DISHES
+    input.id = input.name;
+    this.setState((prevState) => {
+      let meals = prevState.meals;
+      meals[meals.length +1] = input; 
+      return {meals};
     })
   }
 
   render() {
     let dishes = [];
-    DISHES.forEach((dish) => {
+    this.state.meals.forEach((dish) => {
       if(dish.name.toLowerCase().indexOf(this.state.searchText.toLowerCase()) === -1) {
         return;
       }
